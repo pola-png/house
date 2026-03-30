@@ -53,7 +53,7 @@ const features = [
 
 export default function Home() {
   const { user } = useAuth();
-  const heroImageUrl = "https://images.unsplash.com/photo-1664372623516-0b1540d6771e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtb2Rlcm4lMjBhcGFydG1lbnR8ZW58MHx8fHwxNzU5NDQ3ODY5fDA&ixlib=rb-4.1.0&q=80&w=1080";
+  const heroImageUrl = "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1600";
   
   const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -186,16 +186,16 @@ export default function Home() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center text-white" itemScope itemType="https://schema.org/WebSite">
+        <section className="relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center text-white overflow-hidden" itemScope itemType="https://schema.org/WebSite">
           <Image
             src={heroImageUrl}
-            alt="Modern apartment building"
+            alt="Luxury modern home exterior"
             fill
             priority
             className="object-cover"
-            data-ai-hint="modern apartment"
+            data-ai-hint="luxury modern home"
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(7,41,46,0.82),rgba(8,71,82,0.58),rgba(194,143,20,0.28))]" />
           <div className="relative z-10 px-4 w-full max-w-4xl">
             <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-headline font-bold mb-3 md:mb-4 drop-shadow-md px-2" itemProp="name">
               Find Your Perfect Home Anywhere
