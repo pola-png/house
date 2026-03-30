@@ -1,21 +1,41 @@
 import { supabase } from '@/lib/supabase';
+import { BRAND } from '@/lib/brand';
 
 export async function GET() {
   try {
-    const { data: properties } = await supabase
-      .from('properties')
-      .select('id, updatedAt, isPremium, status')
-      .in('status', ['Available', 'For Rent', 'For Sale'])
-      .order('updatedAt', { ascending: false })
-      .limit(50000);
+    const batchSize = 1000;
+    const properties: Array<{ id: string; updatedAt: string; isPremium?: boolean | null; status: string }> = [];
 
-    if (!properties) {
+    let from = 0;
+    while (true) {
+      const to = from + batchSize - 1;
+      const { data, error } = await supabase
+        .from('properties')
+        .select('id, updatedAt, isPremium, status')
+        .in('status', ['Available', 'For Rent', 'For Sale'])
+        .order('updatedAt', { ascending: false })
+        .range(from, to);
+
+      if (error || !data || data.length === 0) {
+        break;
+      }
+
+      properties.push(...data);
+
+      if (data.length < batchSize) {
+        break;
+      }
+
+      from += batchSize;
+    }
+
+    if (properties.length === 0) {
       return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>', {
         headers: { 'Content-Type': 'application/xml' },
       });
     }
 
-    const baseUrl = 'https://houserentkenya.co.ke';
+    const baseUrl = BRAND.siteUrl;
     
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

@@ -5,7 +5,7 @@ module.exports = {
   generateIndexSitemap: true,
   changefreq: 'daily',
   priority: 0.7,
-  sitemapSize: 5000,
+  sitemapSize: 50000,
   exclude: ['/admin/*', '/api/*', '/signup/*', '/login', '/reset-password', '/forgot-password'],
   robotsTxtOptions: {
     policies: [

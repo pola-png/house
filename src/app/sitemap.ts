@@ -5,6 +5,7 @@ import { BRAND } from '@/lib/brand';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = BRAND.siteUrl;
+  const batchSize = 1000;
   
   // Static pages
   const staticPages = [
@@ -144,27 +145,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let propertyPages: MetadataRoute.Sitemap = [];
   
   try {
-    const { data: properties } = await supabase
-      .from('properties')
-      .select('id, title, updatedAt, status, images, location, city, bedrooms, propertyType')
-      .in('status', ['Available', 'For Rent', 'For Sale'])
-      .order('updatedAt', { ascending: false })
-      .limit(1000);
+    const slug = (title: string) => title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .substring(0, 60);
 
-    if (properties) {
-      const slug = (title: string) => title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .substring(0, 60);
-      
-      propertyPages = properties.map((property) => ({
-        url: `${baseUrl}/property/${slug(property.title)}-${property.id}`,
-        lastModified: new Date(property.updatedAt),
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
-        images: property.images?.slice(0, 3) || [], // Include up to 3 images per property
-      }));
+    let from = 0;
+    while (true) {
+      const to = from + batchSize - 1;
+      const { data: properties, error } = await supabase
+        .from('properties')
+        .select('id, title, updatedAt, status, images, location, city, bedrooms, propertyType')
+        .in('status', ['Available', 'For Rent', 'For Sale'])
+        .order('updatedAt', { ascending: false })
+        .range(from, to);
+
+      if (error || !properties || properties.length === 0) {
+        break;
+      }
+
+      propertyPages.push(
+        ...properties.map((property) => ({
+          url: `${baseUrl}/property/${slug(property.title)}-${property.id}`,
+          lastModified: new Date(property.updatedAt),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+          images: property.images?.slice(0, 3) || [],
+        }))
+      );
+
+      if (properties.length < batchSize) {
+        break;
+      }
+
+      from += batchSize;
     }
   } catch (error) {
     console.error('Error generating sitemap:', error);

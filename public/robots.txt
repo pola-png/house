@@ -20,10 +20,3 @@ Allow: /search?beds=*
 
 # Sitemap location
 Sitemap: https://gotperfect.online/sitemap.xml
-
-# Crawl-delay for specific bots
-User-agent: Googlebot
-Crawl-delay: 1
-
-User-agent: Bingbot
-Crawl-delay: 2
