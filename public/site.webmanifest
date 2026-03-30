@@ -24,14 +24,14 @@
       "short_name": "Search",
       "description": "Search for rental properties",
       "url": "/search",
-      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+      "icons": [{ "src": "/logo.svg", "sizes": "any" }]
     },
     {
       "name": "Post Property",
       "short_name": "Post",
       "description": "List your property for rent",
       "url": "/admin/properties/new",
-      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+      "icons": [{ "src": "/logo.svg", "sizes": "any" }]
     }
   ],
   "screenshots": [
