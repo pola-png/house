@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { supabaseAdmin } from '@/lib/supabase-admin'
+import { getSupabaseAdmin } from '@/lib/supabase-admin'
 
 type SaveBody = {
   id?: string
@@ -31,6 +31,7 @@ const toNumber = (v: any, fallback = 0) => {
 
 export async function POST(req: Request) {
   try {
+    const supabaseAdmin = getSupabaseAdmin()
     const anonUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string
     const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
     if (!anonUrl || !anonKey) {
@@ -123,4 +124,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: e?.message || 'Save error' }, { status: 500 })
   }
 }
-

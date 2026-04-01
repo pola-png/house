@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { supabaseAdmin } from '@/lib/supabase-admin'
+import { getSupabaseAdmin } from '@/lib/supabase-admin'
 
 type Body = {
   subject?: string
@@ -29,6 +29,7 @@ async function getUserFromBearer(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const supabaseAdmin = getSupabaseAdmin()
     let body: Body = {}
     const ct = request.headers.get('content-type') || ''
     if (ct.includes('application/json')) {
