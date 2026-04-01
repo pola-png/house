@@ -40,6 +40,6 @@ export default function robots(): MetadataRoute.Robots {
         crawlDelay: 2,
       },
     ],
-    sitemap: 'https://houserentkenya.co.ke/sitemap.xml',
+    sitemap: 'https://gotperfects.online/sitemap.xml',
   };
 }

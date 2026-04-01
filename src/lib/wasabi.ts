@@ -45,7 +45,7 @@ export function toWasabiProxyAbsolute(urlOrKey: string, origin?: string): string
   const proxied = toWasabiProxyPath(urlOrKey);
   if (!proxied) return proxied;
   if (proxied.startsWith('http://') || proxied.startsWith('https://')) return proxied;
-  const base = origin || process.env.NEXT_PUBLIC_SITE_URL || 'https://houserentkenya.co.ke';
+  const base = origin || process.env.NEXT_PUBLIC_SITE_URL || 'https://gotperfects.online';
   if (proxied.startsWith('/')) return `${base}${proxied}`;
   return `${base}/${proxied}`;
 }

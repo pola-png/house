@@ -190,7 +190,7 @@ export function generatePropertySchema(property: Property, agent?: any) {
     "@type": "RealEstateListing",
     "name": property.title,
     "description": property.description,
-    "url": `https://houserentkenya.co.ke/property/${property.id}`,
+    "url": `${BRAND.siteUrl}/property/${property.id}`,
     "datePosted": property.createdAt,
     "price": {
       "@type": "PriceSpecification",

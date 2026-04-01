@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { BRAND } from '@/lib/brand';
 
 export const dynamic = 'force-dynamic';
 
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
           description,
         },
         alternates: {
-          canonical: `https://houserentkenya.com/${slug}`,
+          canonical: `${BRAND.siteUrl}/${slug}`,
         },
       };
     }

@@ -1,5 +1,6 @@
 import { PromotedPropertiesLayout } from '@/components/promoted-properties-layout';
 import { getPropertiesWithPromotion } from '@/lib/promoted-properties';
+import { BRAND } from '@/lib/brand';
 import { Metadata } from 'next';
 
 export const revalidate = 3600;
@@ -20,11 +21,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: '2 Bedroom Coastal Properties in Mombasa | Beach Living',
     description: 'Discover 2 bedroom beachfront properties in Mombasa with ocean views and modern amenities.',
-    url: 'https://houserentkenya.co.ke/2-bedroom-house-for-rent-in-mombasa',
+    url: `${BRAND.siteUrl}/2-bedroom-house-for-rent-in-mombasa`,
     type: 'website'
   },
   alternates: {
-    canonical: 'https://houserentkenya.co.ke/2-bedroom-house-for-rent-in-mombasa',
+    canonical: `${BRAND.siteUrl}/2-bedroom-house-for-rent-in-mombasa`,
   },
 };
 
@@ -46,7 +47,7 @@ export default async function Page() {
             "@type": "WebPage",
             "name": "2 Bedroom Houses for Rent in Mombasa",
             "description": "Find 2 bedroom coastal properties for rent in Mombasa with beachfront views and modern amenities.",
-            "url": "https://houserentkenya.co.ke/2-bedroom-house-for-rent-in-mombasa",
+            "url": `${BRAND.siteUrl}/2-bedroom-house-for-rent-in-mombasa`,
             "mainEntity": {
               "@type": "RealEstateAgent",
               "name": "House Rent Kenya",

@@ -1,5 +1,6 @@
 import { PromotedPropertiesLayout } from '@/components/promoted-properties-layout';
 import { getPropertiesWithPromotion } from '@/lib/promoted-properties';
+import { BRAND } from '@/lib/brand';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -19,11 +20,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Properties for Rent in Nairobi - Best Apartments & Houses | House Rent Kenya',
     description: 'Discover premium properties for rent in Nairobi. Verified listings in Westlands, Kilimani, Karen & top neighborhoods. Instant booking, virtual tours.',
-    url: 'https://houserentkenya.co.ke/nairobi-properties',
+    url: `${BRAND.siteUrl}/nairobi-properties`,
     images: ['/nairobi-properties-og.jpg']
   },
   alternates: {
-    canonical: 'https://houserentkenya.co.ke/nairobi-properties'
+    canonical: `${BRAND.siteUrl}/nairobi-properties`
   }
 };
 

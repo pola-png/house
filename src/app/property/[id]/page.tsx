@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabase';
 import PropertyDetailClient from './property-detail-client';
 import { PropertySchema } from '@/components/property-schema';
 import { toWasabiProxyAbsolute } from '@/lib/wasabi';
+import { BRAND } from '@/lib/brand';
 
 export const revalidate = 3600; // Revalidate every hour for fresh content
 
@@ -55,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const primaryImage = images[0];
     const ogImages = (primaryImage ? [primaryImage] : images).length
       ? (primaryImage ? [primaryImage] : images)
-      : ['https://houserentkenya.co.ke/default-property.jpg'];
+      : [`${BRAND.siteUrl}/default-property.jpg`];
 
     // Comprehensive keywords for better SEO
     const keywords = [
@@ -102,9 +103,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title,
         description,
         images: ogImages,
-        url: `https://houserentkenya.co.ke/property/${id}`,
+        url: `${BRAND.siteUrl}/property/${id}`,
         type: 'article',
-        siteName: 'House Rent Kenya',
+        siteName: BRAND.name,
         locale: 'en_KE'
       },
       twitter: {
@@ -115,7 +116,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         site: '@HouseRentKenya'
       },
       alternates: {
-        canonical: `https://houserentkenya.co.ke/property/${id}`
+        canonical: `${BRAND.siteUrl}/property/${id}`
       },
       robots: {
         index: true,
@@ -191,8 +192,8 @@ export default async function PropertyPage({ params }: Props) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "RealEstateListing",
-              "@id": `https://houserentkenya.co.ke/property/${id}`,
-              "url": `https://houserentkenya.co.ke/property/${id}`,
+              "@id": `${BRAND.siteUrl}/property/${id}`,
+              "url": `${BRAND.siteUrl}/property/${id}`,
               "name": property.title,
               "description": property.description,
               "datePosted": property.createdAt,
@@ -233,10 +234,10 @@ export default async function PropertyPage({ params }: Props) {
               "image": property.images?.map((img: string) => toWasabiProxyAbsolute(img)).filter(Boolean) || [],
               "provider": {
                 "@type": "RealEstateAgent",
-                "name": agent?.displayName || agent?.firstName + ' ' + agent?.lastName || "House Rent Kenya",
+                "name": agent?.displayName || agent?.firstName + ' ' + agent?.lastName || BRAND.name,
                 "telephone": agent?.phoneNumber,
                 "email": agent?.email,
-                "url": "https://houserentkenya.co.ke"
+                "url": BRAND.siteUrl
               },
               "mainEntity": {
                 "@type": "Residence",
@@ -254,7 +255,7 @@ export default async function PropertyPage({ params }: Props) {
               },
               "potentialAction": {
                 "@type": "ViewAction",
-                "target": `https://houserentkenya.co.ke/property/${id}`
+                "target": `${BRAND.siteUrl}/property/${id}`
               }
             })
           }}
@@ -273,25 +274,25 @@ export default async function PropertyPage({ params }: Props) {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://houserentkenya.co.ke"
+                "item": BRAND.siteUrl
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Properties",
-                "item": "https://houserentkenya.co.ke/search"
+                "item": `${BRAND.siteUrl}/search`
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": property?.location || "Property",
-                "item": `https://houserentkenya.co.ke/search?q=${property?.location || ''}`
+                "item": `${BRAND.siteUrl}/search?q=${property?.location || ''}`
               },
               {
                 "@type": "ListItem",
                 "position": 4,
                 "name": property?.title || "Property Details",
-                "item": `https://houserentkenya.co.ke/property/${id}`
+                "item": `${BRAND.siteUrl}/property/${id}`
               }
             ]
           })

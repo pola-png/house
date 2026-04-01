@@ -1,5 +1,6 @@
 import { PromotedPropertiesLayout } from '@/components/promoted-properties-layout';
 import { getPropertiesWithPromotion } from '@/lib/promoted-properties';
+import { BRAND } from '@/lib/brand';
 import { Metadata } from 'next';
 
 export const revalidate = 3600;
@@ -20,11 +21,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: '3 Bedroom Houses for Rent in Kenya | Family Properties',
     description: 'Discover spacious 3 bedroom family homes across Kenya. Perfect for large families with verified listings.',
-    url: 'https://houserentkenya.co.ke/3-bedroom-rent-in-kenya',
+    url: `${BRAND.siteUrl}/3-bedroom-rent-in-kenya`,
     type: 'website'
   },
   alternates: {
-    canonical: 'https://houserentkenya.co.ke/3-bedroom-rent-in-kenya'
+    canonical: `${BRAND.siteUrl}/3-bedroom-rent-in-kenya`
   }
 };
 
@@ -45,7 +46,7 @@ export default async function Page() {
             "@type": "WebPage",
             "name": "3 Bedroom Houses for Rent in Kenya",
             "description": "Find spacious 3 bedroom family homes and apartments for rent across Kenya with verified listings.",
-            "url": "https://houserentkenya.co.ke/3-bedroom-rent-in-kenya",
+            "url": `${BRAND.siteUrl}/3-bedroom-rent-in-kenya`,
             "mainEntity": {
               "@type": "RealEstateAgent",
               "name": "House Rent Kenya",

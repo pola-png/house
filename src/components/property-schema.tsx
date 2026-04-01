@@ -12,10 +12,10 @@ export function PropertySchema({ property }: PropertySchemaProps) {
     "@type": "RealEstateListing",
     "name": property.title,
     "description": property.description,
-    "url": `https://houserentkenya.co.ke/property/${property.id}`,
+    "url": `${BRAND.siteUrl}/property/${property.id}`,
     "image": property.images?.[0]
       ? toWasabiProxyAbsolute(property.images[0])
-      : "https://houserentkenya.co.ke/default-property.jpg",
+      : `${BRAND.siteUrl}/default-property.jpg`,
     "datePosted": property.createdAt,
     "validThrough": new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(), // 90 days from now
     "offers": {

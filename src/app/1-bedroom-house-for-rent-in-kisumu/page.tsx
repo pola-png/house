@@ -1,5 +1,6 @@
 import { PromotedPropertiesLayout } from '@/components/promoted-properties-layout';
 import { getPropertiesWithPromotion } from '@/lib/promoted-properties';
+import { BRAND } from '@/lib/brand';
 import { Metadata } from 'next';
 
 export const revalidate = 3600;
@@ -20,11 +21,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: '1 Bedroom Properties in Kisumu | Lakeside Living',
     description: 'Discover 1 bedroom apartments in Kisumu with beautiful lake views and modern amenities.',
-    url: 'https://houserentkenya.co.ke/1-bedroom-house-for-rent-in-kisumu',
+    url: `${BRAND.siteUrl}/1-bedroom-house-for-rent-in-kisumu`,
     type: 'website'
   },
   alternates: {
-    canonical: 'https://houserentkenya.co.ke/1-bedroom-house-for-rent-in-kisumu'
+    canonical: `${BRAND.siteUrl}/1-bedroom-house-for-rent-in-kisumu`
   }
 };
 
@@ -46,7 +47,7 @@ export default async function Page() {
             "@type": "WebPage",
             "name": "1 Bedroom Apartments for Rent in Kisumu",
             "description": "Find 1 bedroom apartments and houses for rent in Kisumu, Kenya with lakeside views and modern amenities.",
-            "url": "https://houserentkenya.co.ke/1-bedroom-house-for-rent-in-kisumu",
+            "url": `${BRAND.siteUrl}/1-bedroom-house-for-rent-in-kisumu`,
             "mainEntity": {
               "@type": "RealEstateAgent",
               "name": "House Rent Kenya",

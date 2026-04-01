@@ -19,4 +19,4 @@ Allow: /search?property_type=*
 Allow: /search?beds=*
 
 # Sitemap location
-Sitemap: https://gotperfect.online/sitemap.xml
+Sitemap: https://gotperfects.online/sitemap.xml

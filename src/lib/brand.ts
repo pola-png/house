@@ -5,7 +5,7 @@ export const BRAND = {
   email: 'Polamedian@gmail.com',
   phone: '+2349035986401',
   phoneDisplay: '+234 903 598 6401',
-  siteUrl: 'https://gotperfect.online',
+  siteUrl: 'https://gotperfects.online',
   logoPath: '/logo.svg',
   footerDescription:
     'Find verified places to rent, homes to buy, and property support in one place.',

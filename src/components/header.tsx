@@ -55,10 +55,10 @@ export function Header() {
   const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
+  const currentPathname = pathname ?? '/';
   const [searchQuery, setSearchQuery] = useState('');
   const [isBrowseOpen, setIsBrowseOpen] = useState(false);
-  const isHomepage = pathname === '/';
-  const isAdminPage = pathname?.startsWith('/admin');
+  const isHomepage = currentPathname === '/';
   
   // Check if we're in admin mode by looking at localStorage and pathname
   const getIsAdminMode = () => {
@@ -120,7 +120,7 @@ export function Header() {
   };
 
   const getBreadcrumbs = () => {
-    const segments = pathname.split('/').filter(Boolean);
+    const segments = currentPathname.split('/').filter(Boolean);
     const breadcrumbs = [{ label: 'Home', href: '/' }];
     
     let currentPath = '';
@@ -136,9 +136,9 @@ export function Header() {
         
         // Store the current dashboard in localStorage for future reference
         if (typeof window !== 'undefined') {
-          if (pathname?.includes('/admin/admin-dashboard')) {
+          if (currentPathname.includes('/admin/admin-dashboard')) {
             window.localStorage.setItem('lastDashboard', '/admin/admin-dashboard');
-          } else if (pathname?.includes('/admin/dashboard')) {
+          } else if (currentPathname.includes('/admin/dashboard')) {
             window.localStorage.setItem('lastDashboard', '/admin/dashboard');
           }
         }

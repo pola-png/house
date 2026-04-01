@@ -1,5 +1,6 @@
 import { PromotedPropertiesLayout } from '@/components/promoted-properties-layout';
 import { getPropertiesWithPromotion } from '@/lib/promoted-properties';
+import { BRAND } from '@/lib/brand';
 import { Metadata } from 'next';
 
 export const revalidate = 3600;
@@ -20,11 +21,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: '2 Bedroom Apartments for Rent in Kenya | Best Deals',
     description: 'Discover 2 bedroom properties for rent across Kenya. Verified listings with photos, prices & instant booking.',
-    url: 'https://houserentkenya.co.ke/2-bedroom-rent-in-kenya',
+    url: `${BRAND.siteUrl}/2-bedroom-rent-in-kenya`,
     type: 'website'
   },
   alternates: {
-    canonical: 'https://houserentkenya.co.ke/2-bedroom-rent-in-kenya'
+    canonical: `${BRAND.siteUrl}/2-bedroom-rent-in-kenya`
   }
 };
 
@@ -45,7 +46,7 @@ export default async function Page() {
             "@type": "WebPage",
             "name": "2 Bedroom Apartments for Rent in Kenya",
             "description": "Find 2 bedroom apartments and houses for rent across Kenya with verified listings and instant booking.",
-            "url": "https://houserentkenya.co.ke/2-bedroom-rent-in-kenya",
+            "url": `${BRAND.siteUrl}/2-bedroom-rent-in-kenya`,
             "mainEntity": {
               "@type": "RealEstateAgent",
               "name": "House Rent Kenya",

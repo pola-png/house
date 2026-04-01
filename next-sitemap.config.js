@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://gotperfect.online',
+  siteUrl: 'https://gotperfects.online',
   generateRobotsTxt: false, // We have custom robots.txt
   generateIndexSitemap: true,
   changefreq: 'daily',

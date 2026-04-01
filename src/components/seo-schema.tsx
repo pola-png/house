@@ -47,8 +47,8 @@ export function SEOSchema({ type, data }: SEOSchemaProps) {
             "@type": "Accommodation",
             "name": data.title,
             "description": data.description,
-            "url": `https://houserentkenya.co.ke/property/${data.id}`,
-            "image": data.images?.[0] || "https://houserentkenya.co.ke/default-property.jpg",
+            "url": `${BRAND.siteUrl}/property/${data.id}`,
+            "image": data.images?.[0] || `${BRAND.siteUrl}/default-property.jpg`,
             "address": {
               "@type": "PostalAddress",
               "addressLocality": data.location,

@@ -1,13 +1,15 @@
+import { BRAND } from '@/lib/brand';
+
 export function WebsiteSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'House Rent Kenya',
-    url: 'https://house-rent-kenya.vercel.app',
-    description: 'Kenya\'s #1 property portal for rentals and sales',
+    name: BRAND.name,
+    url: BRAND.siteUrl,
+    description: `${BRAND.name} property portal for rentals and sales`,
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://house-rent-kenya.vercel.app/search?q={search_term_string}',
+      target: `${BRAND.siteUrl}/search?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
     },
   };
@@ -24,10 +26,10 @@ export function OrganizationSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'House Rent Kenya',
-    url: 'https://house-rent-kenya.vercel.app',
-    logo: 'https://house-rent-kenya.vercel.app/logo.png',
-    description: 'Kenya\'s leading property rental and sales platform',
+    name: BRAND.name,
+    url: BRAND.siteUrl,
+    logo: `${BRAND.siteUrl}${BRAND.logoPath}`,
+    description: `${BRAND.name} property rental and sales platform`,
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'KE',
