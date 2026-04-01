@@ -48,28 +48,6 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
     priority: 0.7,
   }));
 
-  const locations = [
-    'lagos', 'abuja', 'london', 'manchester', 'dubai', 'abu dhabi', 'new york',
-    'toronto', 'vancouver', 'singapore', 'sydney', 'melbourne', 'johannesburg',
-    'cape town', 'paris', 'berlin', 'madrid', 'rome', 'tokyo', 'bangkok',
-    'mumbai', 'delhi', 'istanbul', 'doha', 'riyadh', 'nairobi', 'accra', 'bali'
-  ];
-
-  const locationPages: SitemapEntry[] = locations.map((location) => ({
-    url: `${baseUrl}/search?q=${encodeURIComponent(location)}`,
-    lastModified: new Date(),
-    changeFrequency: 'daily',
-    priority: 0.8,
-  }));
-
-  const propertyTypes = ['apartment', 'house', 'studio', 'bedsitter', 'mansion', 'townhouse', 'villa', 'penthouse', 'condo'];
-  const typePages: SitemapEntry[] = propertyTypes.map((type) => ({
-    url: `${baseUrl}/search?property_type=${encodeURIComponent(type)}&type=rent`,
-    lastModified: new Date(),
-    changeFrequency: 'daily',
-    priority: 0.8,
-  }));
-
   const propertyPages: SitemapEntry[] = [];
 
   try {
@@ -114,5 +92,5 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
     console.error('Error generating sitemap property entries:', error);
   }
 
-  return [...staticPages, ...seoPages, ...countryPages, ...propertyPages, ...locationPages, ...typePages];
+  return [...staticPages, ...seoPages, ...countryPages, ...propertyPages];
 }
