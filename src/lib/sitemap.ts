@@ -116,33 +116,3 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
 
   return [...staticPages, ...seoPages, ...countryPages, ...propertyPages, ...locationPages, ...typePages];
 }
-
-export function buildSitemapXml(entries: SitemapEntry[]): string {
-  const escapeXml = (value: string) =>
-    value
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&apos;');
-
-  const urls = entries
-    .map((entry) => {
-      const images = (entry.images || [])
-        .map((image) => `\n    <image:image><image:loc>${escapeXml(image)}</image:loc></image:image>`)
-        .join('');
-
-      return `  <url>
-    <loc>${escapeXml(entry.url)}</loc>
-    <lastmod>${(entry.lastModified || new Date()).toISOString()}</lastmod>
-    ${entry.changeFrequency ? `<changefreq>${entry.changeFrequency}</changefreq>` : ''}
-    ${typeof entry.priority === 'number' ? `<priority>${entry.priority.toFixed(1)}</priority>` : ''}${images}
-  </url>`;
-    })
-    .join('\n');
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${urls}
-</urlset>`;
-}
