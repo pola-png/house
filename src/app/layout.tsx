@@ -72,8 +72,6 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/logo.svg',
-    shortcut: '/logo.svg',
-    apple: '/logo.svg',
   },
   manifest: '/site.webmanifest',
   alternates: {
@@ -108,9 +106,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/logo.svg"/>
         <link rel="icon" type="image/svg+xml" href="/logo.svg"/>
-        <link rel="mask-icon" href="/logo.svg" color="#e67e22"/>
         <link rel="dns-prefetch" href="//images.unsplash.com" />
         <link rel="preconnect" href="https://api.supabase.co" />
         <meta name="msapplication-TileColor" content="#e67e22" />
