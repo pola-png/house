@@ -3,6 +3,7 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone } from 'lucide-reac
 import { Button } from './ui/button';
 import { BrandMark } from './brand-mark';
 import { BRAND } from '@/lib/brand';
+import { SEO_FOOTER_LINKS } from '@/lib/seo-pages';
 
 const footerLinks = {
   company: [
@@ -10,11 +11,7 @@ const footerLinks = {
     { label: 'Contact Us', href: '/contact' },
     { label: 'Blog', href: '/blog' },
   ],
-  explore: [
-    { label: 'Rent', href: '/rentals-worldwide' },
-    { label: 'Buy', href: '/real-estate-for-sale' },
-    { label: 'Agents', href: '/agents' },
-  ],
+  explore: SEO_FOOTER_LINKS,
   support: [
     { label: 'Help Center', href: '/contact' },
     { label: 'Terms of Service', href: '/terms' },
