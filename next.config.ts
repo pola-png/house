@@ -63,19 +63,6 @@ const nextConfig = {
         ],
       },
       {
-        source: '/sitemap.xml',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'application/xml',
-          },
-          {
-            key: 'Cache-control',
-            value: 'public, max-age=3600, s-maxage=3600',
-          },
-        ],
-      },
-      {
         source: '/robots.txt',
         headers: [
           {
