@@ -1,10 +1,8 @@
-import { supabase } from '@/lib/supabase';
-import PropertyDetailClient from '../property/[id]/property-detail-client';
 import { PropertyCard } from '@/components/property-card';
 import { getPropertiesWithPromotion } from '@/lib/promoted-properties';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import { BRAND } from '@/lib/brand';
 
@@ -96,11 +94,8 @@ export default async function SlugPropertyPage({ params }: { params: Promise<{ s
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(actualId)) {
     return notFound();
   }
-  
-  const { data } = await supabase.from('properties').select('id').eq('id', actualId).single();
-  if (!data) return notFound();
-  
-  return <PropertyDetailClient id={actualId} />;
+
+  redirect(`/property/${slug}`);
 }
 
 // Auto-generated location landing page
@@ -176,7 +171,7 @@ async function renderLocationPage(slug: string, searchLocation: string) {
           
           <div className="text-center">
             <Button asChild size="lg">
-              <Link href={`/search?q=${searchLocation}&type=rent`}>View All {displayLocation} Properties</Link>
+              <Link href="/search">View All {displayLocation} Properties</Link>
             </Button>
           </div>
         </>

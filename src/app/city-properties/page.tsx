@@ -25,7 +25,7 @@ export default async function Page() {
       description={`Discover ${all.length}+ apartments and homes suited for city living. Explore central neighborhoods, business districts, and high-demand urban locations.`}
       featuredSectionTitle="Featured City Listings"
       regularSectionTitle="More City Properties"
-      viewAllLink="/search?type=rent"
+      viewAllLink="/search"
       viewAllText="Search City Properties"
     />
   );

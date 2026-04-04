@@ -44,7 +44,7 @@ export default async function NairobiPropertiesPage() {
       description={`Find ${all.length}+ properties for rent in Nairobi. Apartments, houses & homes in Westlands, Kilimani, Karen, Lavington & more neighborhoods.`}
       featuredSectionTitle="Featured Properties in Nairobi"
       regularSectionTitle="More Nairobi Properties"
-      viewAllLink="/search?q=nairobi&type=rent"
+      viewAllLink="/search"
       viewAllText="View All Nairobi Properties"
     />
   );

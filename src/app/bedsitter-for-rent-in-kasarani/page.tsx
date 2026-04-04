@@ -33,7 +33,7 @@ export default async function Page() {
       description={`Find affordable bedsitter apartments for rent in Kasarani, Nairobi. Browse ${all.length}+ verified listings with photos, prices, and agent contacts.`}
       featuredSectionTitle="Featured Bedsitters in Kasarani"
       regularSectionTitle="More Bedsitters in Kasarani"
-      viewAllLink="/search?q=kasarani&beds=1"
+      viewAllLink="/search"
       viewAllText="View All Bedsitters in Kasarani"
     />
   );

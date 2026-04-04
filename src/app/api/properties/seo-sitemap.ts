@@ -1,17 +1,17 @@
 import { supabase } from '@/lib/supabase';
-import { BRAND } from '@/lib/brand';
+import { createPropertyUrl } from '@/lib/utils-seo';
 
 export async function GET() {
   try {
     const batchSize = 1000;
-    const properties: Array<{ id: string; updatedAt: string; isPremium?: boolean | null; status: string }> = [];
+    const properties: Array<{ id: string; title: string; updatedAt: string; isPremium?: boolean | null; status: string }> = [];
 
     let from = 0;
     while (true) {
       const to = from + batchSize - 1;
       const { data, error } = await supabase
         .from('properties')
-        .select('id, updatedAt, isPremium, status')
+        .select('id, title, updatedAt, isPremium, status')
         .in('status', ['Available', 'For Rent', 'For Sale'])
         .order('updatedAt', { ascending: false })
         .range(from, to);
@@ -35,13 +35,11 @@ export async function GET() {
       });
     }
 
-    const baseUrl = BRAND.siteUrl;
-    
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${properties
   .map((property) => {
-    const url = `${baseUrl}/property/${property.id}`;
+    const url = createPropertyUrl(property.id, property.title || property.id);
     const lastmod = new Date(property.updatedAt).toISOString();
     const priority = property.isPremium ? '0.9' : '0.7';
     

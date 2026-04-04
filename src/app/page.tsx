@@ -420,8 +420,16 @@ export default function Home() {
                 searchUrl += `q=${encodeURIComponent(search)}&type=rent`;
                 
                 return (
-                  <Button key={index} variant="outline" asChild className="bg-background">
-                    <Link href={searchUrl}>{search}</Link>
+                  <Button
+                    key={index}
+                    variant="outline"
+                    type="button"
+                    className="bg-background"
+                    onClick={() => {
+                      window.location.href = searchUrl;
+                    }}
+                  >
+                    {search}
                   </Button>
                 );
               })}

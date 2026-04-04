@@ -11,8 +11,8 @@ const footerLinks = {
     { label: 'Blog', href: '/blog' },
   ],
   explore: [
-    { label: 'Rent', href: '/search?type=rent' },
-    { label: 'Buy', href: '/search?type=buy' },
+    { label: 'Rent', href: '/rentals-worldwide' },
+    { label: 'Buy', href: '/real-estate-for-sale' },
     { label: 'Agents', href: '/agents' },
   ],
   support: [

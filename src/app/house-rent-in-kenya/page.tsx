@@ -18,7 +18,7 @@ export default async function Page() {
       description={`Discover ${all.length}+ houses for rent across Kenya. Verified listings in Nairobi, Mombasa, Kisumu & more.`}
       featuredSectionTitle="Featured Properties in Kenya"
       regularSectionTitle="More Properties for Rent"
-      viewAllLink="/search?type=rent"
+      viewAllLink="/search"
       viewAllText="View All Houses for Rent"
     />
   );

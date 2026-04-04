@@ -65,7 +65,7 @@ export default async function Page() {
         description={`Explore ${all.length}+ properties for sale across global markets. Browse residential, commercial, and investment opportunities with verified listings.`}
         featuredSectionTitle="Featured Investment Properties"
         regularSectionTitle="More Real Estate Opportunities"
-        viewAllLink="/search?type=sale"
+        viewAllLink="/search"
         viewAllText="View All Real Estate Properties"
       />
     </>

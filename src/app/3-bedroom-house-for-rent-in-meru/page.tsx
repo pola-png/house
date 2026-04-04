@@ -32,7 +32,7 @@ export default async function Page() {
       description={`Find ${all.length}+ spacious 3 bedroom houses for rent in Meru. Family-friendly homes with modern amenities.`}
       featuredSectionTitle="Featured Family Homes in Meru"
       regularSectionTitle="More Properties in Meru"
-      viewAllLink="/search?q=meru&beds=3"
+      viewAllLink="/search"
       viewAllText="View All Meru Properties"
     />
   );

@@ -25,7 +25,7 @@ export default async function Page() {
       description={`Search ${all.length}+ compact and budget-friendly rental options. Compare efficient spaces for solo renters, students, and first-time movers.`}
       featuredSectionTitle="Featured Budget Rentals"
       regularSectionTitle="More Affordable Listings"
-      viewAllLink="/search?type=rent"
+      viewAllLink="/search"
       viewAllText="Search Budget Rentals"
     />
   );

@@ -26,7 +26,7 @@ export default async function Page() {
       description={`Browse ${all.length}+ three-bedroom rentals designed for families, shared living, and larger households.`}
       featuredSectionTitle="Featured 3 Bedroom Homes"
       regularSectionTitle="More 3 Bedroom Listings"
-      viewAllLink="/search?beds=3&type=rent"
+      viewAllLink="/search"
       viewAllText="Search 3 Bedroom Homes"
     />
   );

@@ -66,7 +66,7 @@ export default async function Page() {
         description={`Discover ${all.length}+ houses for sale across global markets. Browse standalone houses, townhouses, villas, and premium family homes.`}
         featuredSectionTitle="Featured Houses for Sale"
         regularSectionTitle="More Houses for Sale"
-        viewAllLink="/search?property_type=house&type=sale"
+        viewAllLink="/search"
         viewAllText="View All Houses for Sale"
       />
     </>

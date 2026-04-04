@@ -32,7 +32,7 @@ export default async function Page() {
       description={`Find ${all.length}+ houses for rent in Nairobi. Westlands, Kilimani, Karen, Lavington & more neighborhoods.`}
       featuredSectionTitle="Featured Properties in Nairobi"
       regularSectionTitle="More Properties in Nairobi"
-      viewAllLink="/search?q=nairobi&type=rent"
+      viewAllLink="/search"
       viewAllText="View All Nairobi Properties"
     />
   );

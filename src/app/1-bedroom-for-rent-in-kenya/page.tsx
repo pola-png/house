@@ -27,7 +27,7 @@ export default async function Page() {
       description={`Discover ${all.length}+ 1 bedroom apartments for rent in Kenya. Affordable options for singles & young professionals.`}
       featuredSectionTitle="Featured 1 Bedroom Apartments"
       regularSectionTitle="More 1 Bedroom Apartments"
-      viewAllLink="/search?beds=1&type=rent"
+      viewAllLink="/search"
       viewAllText="View All 1 Bedroom Rentals"
     />
   );

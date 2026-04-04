@@ -6,7 +6,6 @@ import { AdvancedSearch } from "@/components/advanced-search";
 import { PropertyComparison } from "@/components/property-comparison";
 import { AIRecommendations } from "@/components/ai-recommendations";
 import { MarketAnalytics } from "@/components/market-analytics";
-import { CanonicalUrl } from "@/components/canonical-url";
 import { SEOSchema } from "@/components/seo-schema";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Filter, BarChart3, Sparkles, Loader2 } from "lucide-react";
@@ -375,7 +374,6 @@ function SearchContent() {
 
   return (
     <>
-      <CanonicalUrl />
       <SEOSchema type="search" data={{ properties, totalResults: properties.length }} />
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="search" className="w-full">

@@ -26,7 +26,7 @@ export default async function Page() {
       description={`Browse ${all.length}+ two-bedroom rentals for couples, small families, and shared living. Compare value, size, and location quickly.`}
       featuredSectionTitle="Featured 2 Bedroom Homes"
       regularSectionTitle="More 2 Bedroom Listings"
-      viewAllLink="/search?beds=2&type=rent"
+      viewAllLink="/search"
       viewAllText="Search 2 Bedroom Homes"
     />
   );

@@ -4,6 +4,7 @@ import PropertyDetailClient from './property-detail-client';
 import { PropertySchema } from '@/components/property-schema';
 import { toWasabiProxyAbsolute } from '@/lib/wasabi';
 import { BRAND } from '@/lib/brand';
+import { createPropertyUrl } from '@/lib/utils-seo';
 
 export const revalidate = 3600; // Revalidate every hour for fresh content
 
@@ -33,7 +34,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!property) {
       return {
         title: 'Property Not Found | House Rent Kenya',
-        description: 'The requested property could not be found on House Rent Kenya.'
+        description: 'The requested property could not be found on House Rent Kenya.',
+        robots: {
+          index: false,
+          follow: false,
+        },
       };
     }
 
@@ -57,6 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const ogImages = (primaryImage ? [primaryImage] : images).length
       ? (primaryImage ? [primaryImage] : images)
       : [`${BRAND.siteUrl}/default-property.jpg`];
+    const canonicalUrl = createPropertyUrl(property.id, property.title);
 
     // Comprehensive keywords for better SEO
     const keywords = [
@@ -95,19 +101,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       });
     }
 
-    return {
-      title,
-      description,
-      keywords,
-      openGraph: {
+      return {
         title,
         description,
-        images: ogImages,
-        url: `${BRAND.siteUrl}/property/${id}`,
-        type: 'article',
-        siteName: BRAND.name,
-        locale: 'en_KE'
-      },
+        keywords,
+        openGraph: {
+          title,
+          description,
+          images: ogImages,
+          url: canonicalUrl,
+          type: 'article',
+          siteName: BRAND.name,
+          locale: 'en_KE'
+        },
       twitter: {
         card: 'summary_large_image',
         title,
@@ -116,7 +122,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         site: '@HouseRentKenya'
       },
       alternates: {
-        canonical: `${BRAND.siteUrl}/property/${id}`
+        canonical: canonicalUrl
       },
       robots: {
         index: true,
@@ -181,6 +187,9 @@ export default async function PropertyPage({ params }: Props) {
   } catch (error) {
     console.error('Error fetching property for schema:', error);
   }
+
+  const propertyWithAgent = property ? { ...property, agent: agent || property.agent } : null;
+  const canonicalUrl = property ? createPropertyUrl(property.id, property.title) : `${BRAND.siteUrl}/property/${actualId}`;
   
   return (
     <>
@@ -192,8 +201,8 @@ export default async function PropertyPage({ params }: Props) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "RealEstateListing",
-              "@id": `${BRAND.siteUrl}/property/${id}`,
-              "url": `${BRAND.siteUrl}/property/${id}`,
+              "@id": canonicalUrl,
+              "url": canonicalUrl,
               "name": property.title,
               "description": property.description,
               "datePosted": property.createdAt,
@@ -255,7 +264,7 @@ export default async function PropertyPage({ params }: Props) {
               },
               "potentialAction": {
                 "@type": "ViewAction",
-                "target": `${BRAND.siteUrl}/property/${id}`
+                "target": canonicalUrl
               }
             })
           }}
@@ -292,15 +301,18 @@ export default async function PropertyPage({ params }: Props) {
                 "@type": "ListItem",
                 "position": 4,
                 "name": property?.title || "Property Details",
-                "item": `${BRAND.siteUrl}/property/${id}`
+                "item": canonicalUrl
               }
             ]
           })
         }}
       />
       
-      {property && <PropertySchema property={property} />}
-      <PropertyDetailClient id={actualId} />
+      {propertyWithAgent && <PropertySchema property={propertyWithAgent} />}
+      <PropertyDetailClient
+        id={actualId}
+        initialProperty={propertyWithAgent}
+      />
     </>
   );
 }

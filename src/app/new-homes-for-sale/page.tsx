@@ -25,7 +25,7 @@ export default async function Page() {
       description={`Explore ${all.length}+ new homes for sale in Kenya. Latest property listings & new developments from trusted builders.`}
       featuredSectionTitle="Featured New Homes"
       regularSectionTitle="More New Listings"
-      viewAllLink="/search?type=sale"
+      viewAllLink="/search"
       viewAllText="View All New Homes"
     />
   );

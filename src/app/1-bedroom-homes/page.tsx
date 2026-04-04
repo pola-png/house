@@ -26,7 +26,7 @@ export default async function Page() {
       description={`Browse ${all.length}+ one-bedroom rentals and compact homes. Compare layouts, neighborhoods, and pricing in one search experience.`}
       featuredSectionTitle="Featured 1 Bedroom Homes"
       regularSectionTitle="More 1 Bedroom Listings"
-      viewAllLink="/search?beds=1&type=rent"
+      viewAllLink="/search"
       viewAllText="Search 1 Bedroom Homes"
     />
   );

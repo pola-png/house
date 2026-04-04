@@ -26,7 +26,7 @@ export default async function Page() {
       description={`Ready to buy a house in Kenya? Browse ${all.length}+ verified properties for sale with expert guidance & trusted agents.`}
       featuredSectionTitle="Featured Houses for Sale"
       regularSectionTitle="More Houses Available"
-      viewAllLink="/search?type=sale"
+      viewAllLink="/search"
       viewAllText="Start Your Home Buying Journey"
     />
   );

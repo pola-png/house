@@ -25,7 +25,7 @@ export default async function Page() {
       description={`Explore ${all.length}+ rental properties across global markets. Search apartments, houses, and flexible living options with verified listings.`}
       featuredSectionTitle="Featured Global Rentals"
       regularSectionTitle="More Rentals"
-      viewAllLink="/search?type=rent"
+      viewAllLink="/search"
       viewAllText="Search Rentals Worldwide"
     />
   );

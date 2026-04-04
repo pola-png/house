@@ -12,6 +12,7 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
   const type = params.type as string;
   const propertyType = params.property_type as string;
   const beds = params.beds as string;
+  const hasFilters = Boolean(q || type || propertyType || beds);
   
   let title = `Property Search Results | ${BRAND.name}`;
   let description = `Find your perfect property anywhere with ${BRAND.name}`;
@@ -33,6 +34,18 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
   return {
     title,
     description,
+    alternates: {
+      canonical: `${BRAND.siteUrl}/search`,
+    },
+    robots: hasFilters
+      ? {
+          index: false,
+          follow: true,
+        }
+      : {
+          index: true,
+          follow: true,
+        },
     openGraph: {
       title,
       description,

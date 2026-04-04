@@ -7,8 +7,7 @@ export function createSlug(text: string): string {
 }
 
 export function createPropertyUrl(id: string, title: string): string {
-  const slug = createSlug(title);
-  return `/property/${slug}-${id}`;
+  return `/property/${createSlug(title)}-${id}`;
 }
 
 export function createPropertySlugUrl(id: string, title: string): string {

@@ -25,7 +25,7 @@ export default async function Page() {
       description={`Browse ${all.length}+ 1 bedroom properties in Kenya. Perfect for singles, couples & young professionals.`}
       featuredSectionTitle="Featured 1 Bedroom Properties"
       regularSectionTitle="More 1 Bedroom Properties"
-      viewAllLink="/search?beds=1"
+      viewAllLink="/1-bedroom-homes"
       viewAllText="View All 1 Bedroom Properties"
     />
   );

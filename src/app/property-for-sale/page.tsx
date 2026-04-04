@@ -65,7 +65,7 @@ export default async function Page() {
         description={`Discover ${promoted.length + regular.length} properties for sale across global markets. Browse apartments, houses, land, and commercial real estate with verified listings.`}
         featuredSectionTitle="Featured Properties for Sale"
         regularSectionTitle="Properties for Sale"
-        viewAllLink="/search?type=buy"
+        viewAllLink="/search"
         viewAllText="View All Properties for Sale"
       />
     </>

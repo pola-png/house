@@ -26,7 +26,7 @@ export default async function Page() {
       description={`Browse ${all.length}+ houses, villas, and larger homes for rent. Compare spacious options designed for families and long-term living.`}
       featuredSectionTitle="Featured Family Homes"
       regularSectionTitle="More Family Rentals"
-      viewAllLink="/search?property_type=house&type=rent"
+      viewAllLink="/search"
       viewAllText="View Family Homes"
     />
   );

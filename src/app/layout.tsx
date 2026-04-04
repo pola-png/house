@@ -77,7 +77,6 @@ export const metadata: Metadata = {
   },
   manifest: '/site.webmanifest',
   alternates: {
-    canonical: BRAND.siteUrl,
     languages: {
       en: BRAND.siteUrl,
     },
@@ -114,7 +113,6 @@ export default function RootLayout({
         <link rel="mask-icon" href="/logo.svg" color="#e67e22"/>
         <link rel="dns-prefetch" href="//images.unsplash.com" />
         <link rel="preconnect" href="https://api.supabase.co" />
-        <link rel="canonical" href={BRAND.siteUrl} />
         <meta name="msapplication-TileColor" content="#e67e22" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />

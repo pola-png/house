@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { BRAND } from '@/lib/brand';
+import { createPropertyUrl } from '@/lib/utils-seo';
 
 interface SEOSchemaProps {
   type: 'property' | 'search' | 'homepage' | 'organization';
@@ -47,7 +48,7 @@ export function SEOSchema({ type, data }: SEOSchemaProps) {
             "@type": "Accommodation",
             "name": data.title,
             "description": data.description,
-            "url": `${BRAND.siteUrl}/property/${data.id}`,
+            "url": `${BRAND.siteUrl}${createPropertyUrl(data.id, data.title)}`,
             "image": data.images?.[0] || `${BRAND.siteUrl}/default-property.jpg`,
             "address": {
               "@type": "PostalAddress",
@@ -89,20 +90,20 @@ export function SEOSchema({ type, data }: SEOSchemaProps) {
           "name": `Property Search Results - ${BRAND.name}`,
           "description": "Search results for rental and sale properties across global markets",
           "url": `${BRAND.siteUrl}/search`,
-          "mainEntity": {
-            "@type": "ItemList",
-            "numberOfItems": data?.totalResults || 0,
-            "itemListElement": data?.properties?.map((property: any, index: number) => ({
-              "@type": "ListItem",
-              "position": index + 1,
-              "item": {
-                "@type": "Accommodation",
-                "name": property.title,
-                "url": `${BRAND.siteUrl}/property/${property.id}`
-              }
-            })) || []
-          }
-        };
+            "mainEntity": {
+              "@type": "ItemList",
+              "numberOfItems": data?.totalResults || 0,
+              "itemListElement": data?.properties?.map((property: any, index: number) => ({
+                "@type": "ListItem",
+                "position": index + 1,
+                "item": {
+                  "@type": "Accommodation",
+                  "name": property.title,
+                  "url": createPropertyUrl(property.id, property.title)
+                }
+              })) || []
+            }
+          };
         break;
 
       case 'organization':

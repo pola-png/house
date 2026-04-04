@@ -1,5 +1,6 @@
 import type { Property } from '@/lib/types';
 import { BRAND } from '@/lib/brand';
+import { createPropertyUrl } from '@/lib/utils-seo';
 
 /**
  * Generate SEO-friendly URL slug for a property
@@ -190,7 +191,7 @@ export function generatePropertySchema(property: Property, agent?: any) {
     "@type": "RealEstateListing",
     "name": property.title,
     "description": property.description,
-    "url": `${BRAND.siteUrl}/property/${property.id}`,
+    "url": createPropertyUrl(property.id, property.title),
     "datePosted": property.createdAt,
     "price": {
       "@type": "PriceSpecification",

@@ -66,7 +66,7 @@ export default async function Page() {
         description={`Find ${all.length}+ 1 bedroom properties for rent in Kisumu. Affordable lakeside living with modern amenities in Kenya's third-largest city.`}
         featuredSectionTitle="Featured Properties in Kisumu"
         regularSectionTitle="More Properties in Kisumu"
-        viewAllLink="/search?q=kisumu&beds=1"
+        viewAllLink="/search"
         viewAllText="View All Kisumu Properties"
       />
     </>

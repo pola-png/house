@@ -65,7 +65,7 @@ export default async function Page() {
         description={`Browse ${all.length}+ 3 bedroom properties for rent in Kenya. Spacious family homes perfect for large families in Nairobi, Mombasa, Kisumu and across the country.`}
         featuredSectionTitle="Featured Family Homes"
         regularSectionTitle="More 3 Bedroom Properties"
-        viewAllLink="/search?beds=3&type=rent"
+        viewAllLink="/search"
         viewAllText="View All 3 Bedroom Properties"
       />
     </>

@@ -49,11 +49,12 @@ const amenityIcons: Record<string, any> = {
 
 interface PropertyDetailClientProps {
   id: string;
+  initialProperty?: Property | null;
 }
 
-export default function PropertyDetailClient({ id }: PropertyDetailClientProps) {
-  const [property, setProperty] = useState<Property | null>(null);
-  const [loading, setLoading] = useState(true);
+export default function PropertyDetailClient({ id, initialProperty = null }: PropertyDetailClientProps) {
+  const [property, setProperty] = useState<Property | null>(initialProperty);
+  const [loading, setLoading] = useState(!initialProperty);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showLightbox, setShowLightbox] = useState(false);
   const [showCallbackForm, setShowCallbackForm] = useState(false);
@@ -91,6 +92,13 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
   useEffect(() => {
     fetchProperty();
   }, [id]);
+
+  useEffect(() => {
+    if (initialProperty) {
+      setProperty(initialProperty);
+      setLoading(false);
+    }
+  }, [initialProperty]);
 
   useEffect(() => {
     if (property) {

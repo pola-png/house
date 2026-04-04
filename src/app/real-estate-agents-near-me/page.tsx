@@ -263,7 +263,7 @@ export default async function Page() {
                   Find top real estate agents in leading cities and business hubs. Browse professionals who understand local pricing, inventory, and transaction flow.
                 </p>
                 <Button variant="outline" size="sm" asChild>
-                  <Link href="/search?agent=true">City Agents</Link>
+                  <Link href="/agents">City Agents</Link>
                 </Button>
               </div>
               
@@ -273,7 +273,7 @@ export default async function Page() {
                   Connect with licensed agents covering coastal homes, resort destinations, waterfront property, and lifestyle-focused real estate.
                 </p>
                 <Button variant="outline" size="sm" asChild>
-                  <Link href="/search?type=buy&agent=true">Lifestyle Market Agents</Link>
+                  <Link href="/agents">Lifestyle Market Agents</Link>
                 </Button>
               </div>
               
@@ -283,7 +283,7 @@ export default async function Page() {
                   Work with professionals focused on emerging cities, investment zones, and residential expansion areas with strong long-term upside.
                 </p>
                 <Button variant="outline" size="sm" asChild>
-                  <Link href="/search?type=rent&agent=true">Growth Market Agents</Link>
+                  <Link href="/agents">Growth Market Agents</Link>
                 </Button>
               </div>
             </div>

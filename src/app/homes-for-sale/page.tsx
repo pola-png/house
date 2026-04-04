@@ -65,7 +65,7 @@ export default async function Page() {
         description={`Find ${all.length}+ homes for sale across multiple markets. Browse houses, apartments, condos, and premium properties with verified listings.`}
         featuredSectionTitle="Featured Homes for Sale"
         regularSectionTitle="More Homes for Sale"
-        viewAllLink="/search?type=sale"
+        viewAllLink="/search"
         viewAllText="View All Homes for Sale"
       />
     </>

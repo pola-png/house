@@ -25,8 +25,8 @@ import { useAuth } from '@/hooks/use-auth-supabase';
 import { BrandMark } from './brand-mark';
 
 const navLinks = [
-  { href: '/search?type=rent', label: 'To Rent' },
-  { href: '/search?type=buy', label: 'For Sale' },
+  { href: '/rentals-worldwide', label: 'To Rent' },
+  { href: '/real-estate-for-sale', label: 'For Sale' },
   { href: '/developments', label: 'Developments' },
   { href: '/advice', label: 'Property Advice' },
   { href: '/agents', label: 'Find Agents' },
@@ -110,6 +110,8 @@ export function Header() {
   const handleSearch = () => {
     if (searchQuery.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      router.push('/search');
     }
   };
 

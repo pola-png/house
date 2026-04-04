@@ -31,7 +31,7 @@ export default async function Page() {
       description={`Browse ${all.length}+ houses for rent across Kenya. Standalone houses, townhouses, villas & mansions available.`}
       featuredSectionTitle="Featured Houses"
       regularSectionTitle="More Houses for Rent"
-      viewAllLink="/search?property_type=house&type=rent"
+      viewAllLink="/search"
       viewAllText="View All Houses for Rent"
     />
   );

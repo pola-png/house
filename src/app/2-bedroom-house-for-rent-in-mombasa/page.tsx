@@ -66,7 +66,7 @@ export default async function Page() {
         description={`Find ${all.length}+ 2 bedroom houses for rent in Mombasa. Coastal living with modern amenities and beachfront access in Nyali, Bamburi & Diani.`}
         featuredSectionTitle="Featured Properties in Mombasa"
         regularSectionTitle="More Properties in Mombasa"
-        viewAllLink="/search?q=mombasa&beds=2"
+        viewAllLink="/search"
         viewAllText="View All Mombasa Properties"
       />
     </>

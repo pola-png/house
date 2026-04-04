@@ -65,7 +65,7 @@ export default async function Page() {
         description={`Discover ${all.length}+ 2 bedroom properties for rent in Kenya. Perfect for small families & couples seeking spacious homes in Nairobi, Mombasa, Kisumu and other major cities.`}
         featuredSectionTitle="Featured 2 Bedroom Properties"
         regularSectionTitle="More 2 Bedroom Properties"
-        viewAllLink="/search?beds=2&type=rent"
+        viewAllLink="/search"
         viewAllText="View All 2 Bedroom Properties"
       />
     </>
