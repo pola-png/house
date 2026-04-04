@@ -80,34 +80,13 @@ export function buildStaticSitemapEntries(): SitemapEntry[] {
   return [...staticPages, ...seoPages, ...countryPages];
 }
 
-export async function getPropertySitemapPageCount(): Promise<number> {
-  const { count, error } = await supabase
-    .from('properties')
-    .select('id', { count: 'exact', head: true })
-    .in('status', ['Available', 'For Rent', 'For Sale']);
-
-  if (error) {
-    throw error;
-  }
-
-  const total = count || 0;
-  return Math.max(1, Math.ceil(total / SITEMAP_PROPERTY_PAGE_SIZE));
-}
-
-export async function getPropertySitemapEntries(page: number): Promise<SitemapEntry[]> {
-  if (!Number.isInteger(page) || page < 1) {
-    return [];
-  }
-
-  const from = (page - 1) * SITEMAP_PROPERTY_PAGE_SIZE;
-  const to = from + SITEMAP_PROPERTY_PAGE_SIZE - 1;
-
+export async function getPropertySitemapEntries(): Promise<SitemapEntry[]> {
   const { data, error } = await supabase
     .from('properties')
     .select('id, title, updatedAt, images')
     .in('status', ['Available', 'For Rent', 'For Sale'])
     .order('updatedAt', { ascending: false })
-    .range(from, to);
+    .limit(SITEMAP_PROPERTY_PAGE_SIZE);
 
   if (error || !data) {
     if (error) {
@@ -154,19 +133,3 @@ ${body}
 </urlset>`;
 }
 
-export function renderSitemapIndexXml(sitemaps: Array<{ url: string; lastModified?: Date }>): string {
-  const body = sitemaps
-    .map((sitemap) => {
-      const lastmod = sitemap.lastModified ? `<lastmod>${sitemap.lastModified.toISOString()}</lastmod>` : '';
-      return `  <sitemap>
-    <loc>${sitemap.url}</loc>
-    ${lastmod}
-  </sitemap>`;
-    })
-    .join('\n');
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${body}
-</sitemapindex>`;
-}
