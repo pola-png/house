@@ -8,7 +8,6 @@ import { createPropertyUrl } from '@/lib/utils-seo';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = BRAND.siteUrl;
 
-  // Static pages
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
     { url: `${baseUrl}/search`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
@@ -20,23 +19,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
   ];
 
-  // SEO landing pages
   const seoPages: MetadataRoute.Sitemap = SEO_SITEMAP_LINKS.map((page) => ({
     url: `${baseUrl}${page.href}`,
     lastModified: new Date(),
-    changeFrequency: 'daily',
-    priority: page.href.includes('/agents') ? 0.8 : 0.9,
+    changeFrequency: 'daily' as const,
+    priority: 0.9,
   }));
 
-  // Country pages
   const countryPages: MetadataRoute.Sitemap = COUNTRIES.map((country) => ({
     url: `${baseUrl}/countries/${slugifyCountry(country)}`,
     lastModified: new Date(),
-    changeFrequency: 'weekly',
+    changeFrequency: 'weekly' as const,
     priority: 0.7,
   }));
 
-  // Location-based search pages
   const locations = [
     'lagos', 'abuja', 'london', 'manchester', 'dubai', 'abu dhabi', 'new york',
     'toronto', 'vancouver', 'singapore', 'sydney', 'melbourne', 'johannesburg',
@@ -47,21 +43,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const locationPages: MetadataRoute.Sitemap = locations.map((location) => ({
     url: `${baseUrl}/search?q=${encodeURIComponent(location)}`,
     lastModified: new Date(),
-    changeFrequency: 'daily',
+    changeFrequency: 'daily' as const,
     priority: 0.8,
   }));
 
-  // Property type pages
   const propertyTypes = ['apartment', 'house', 'studio', 'bedsitter', 'mansion', 'townhouse', 'villa', 'penthouse', 'condo'];
 
   const typePages: MetadataRoute.Sitemap = propertyTypes.map((type) => ({
     url: `${baseUrl}/search?property_type=${encodeURIComponent(type)}`,
     lastModified: new Date(),
-    changeFrequency: 'daily',
+    changeFrequency: 'daily' as const,
     priority: 0.8,
   }));
 
-  // Dynamic property pages — up to 50,000
   let propertyPages: MetadataRoute.Sitemap = [];
 
   try {
@@ -74,7 +68,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     if (properties) {
       propertyPages = properties
-        .filter((property) => property.title && property.id)
+        .filter((p) => p.id && p.title)
         .map((property) => ({
           url: `${baseUrl}${createPropertyUrl(property.id, property.title)}`,
           lastModified: property.updatedAt ? new Date(property.updatedAt) : new Date(),
@@ -83,12 +77,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           images: Array.isArray(property.images)
             ? property.images
                 .slice(0, 3)
-                .filter((img: string) => img && !img.includes('&'))
+                .filter((img: string) => img && typeof img === 'string' && !img.includes('&'))
             : [],
         }));
     }
   } catch (error) {
-    console.error('Error generating property sitemap entries:', error);
+    console.error('Sitemap property fetch error:', error);
   }
 
   return [...staticPages, ...seoPages, ...countryPages, ...locationPages, ...typePages, ...propertyPages];
