@@ -55,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const propertyTypes = ['apartment', 'house', 'studio', 'bedsitter', 'mansion', 'townhouse', 'villa', 'penthouse', 'condo'];
 
   const typePages: MetadataRoute.Sitemap = propertyTypes.map((type) => ({
-    url: `${baseUrl}/search?property_type=${encodeURIComponent(type)}&type=rent`,
+    url: `${baseUrl}/search?property_type=${encodeURIComponent(type)}`,
     lastModified: new Date(),
     changeFrequency: 'daily',
     priority: 0.8,
@@ -73,13 +73,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .limit(50000);
 
     if (properties) {
-      propertyPages = properties.map((property) => ({
-        url: `${baseUrl}${createPropertyUrl(property.id, property.title)}`,
-        lastModified: property.updatedAt ? new Date(property.updatedAt) : new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.8,
-        images: Array.isArray(property.images) ? property.images.slice(0, 3) : [],
-      }));
+      propertyPages = properties
+        .filter((property) => property.title && property.id)
+        .map((property) => ({
+          url: `${baseUrl}${createPropertyUrl(property.id, property.title)}`,
+          lastModified: property.updatedAt ? new Date(property.updatedAt) : new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+          images: Array.isArray(property.images)
+            ? property.images
+                .slice(0, 3)
+                .filter((img: string) => img && !img.includes('&'))
+            : [],
+        }));
     }
   } catch (error) {
     console.error('Error generating property sitemap entries:', error);
