@@ -108,6 +108,35 @@ function SearchContent() {
     };
   }, [searchParams?.toString()]);
 
+  const fetchAllProperties = async (query: any) => {
+    const batchSize = 1000;
+    const allRows: any[] = [];
+    let from = 0;
+
+    while (true) {
+      const to = from + batchSize - 1;
+      const { data, error } = await query.range(from, to);
+
+      if (error) {
+        throw error;
+      }
+
+      if (!data || data.length === 0) {
+        break;
+      }
+
+      allRows.push(...data);
+
+      if (data.length < batchSize) {
+        break;
+      }
+
+      from += batchSize;
+    }
+
+    return allRows;
+  };
+
   const fetchProperties = async (controller?: AbortController) => {
     console.log('Starting fetchProperties...');
     
@@ -190,12 +219,7 @@ function SearchContent() {
       }
 
       console.log('Executing query...');
-      const { data, error } = await query.limit(100).order('createdAt', { ascending: false });
-
-      if (error) {
-        console.error('Supabase query error:', error);
-        throw error;
-      }
+      const data = await fetchAllProperties(query.order('createdAt', { ascending: false }));
 
       console.log('Query results:', data?.length || 0, 'properties');
 

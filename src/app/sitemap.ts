@@ -69,12 +69,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let propertyPages: MetadataRoute.Sitemap = [];
 
   try {
-    const { data: properties } = await supabase
-      .from('properties')
-      .select('id, title, updatedAt, status, images, location, city, bedrooms, propertyType')
-      .in('status', ['Available', 'For Rent', 'For Sale'])
-      .order('updatedAt', { ascending: false })
-      .limit(10000);
+    const batchSize = 1000;
+    const properties: Array<{
+      id: string;
+      title: string;
+      updatedAt: string;
+      status: string;
+      images?: string[] | null;
+      location?: string | null;
+      city?: string | null;
+      bedrooms?: number | null;
+      propertyType?: string | null;
+    }> = [];
+
+    let from = 0;
+    while (true) {
+      const to = from + batchSize - 1;
+      const { data, error } = await supabase
+        .from('properties')
+        .select('id, title, updatedAt, status, images, location, city, bedrooms, propertyType')
+        .in('status', ['Available', 'For Rent', 'For Sale'])
+        .order('updatedAt', { ascending: false })
+        .range(from, to);
+
+      if (error || !data || data.length === 0) {
+        break;
+      }
+
+      properties.push(...data);
+
+      if (data.length < batchSize) {
+        break;
+      }
+
+      from += batchSize;
+    }
 
     if (properties) {
       const slug = (title: string) => title
@@ -112,7 +141,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const propertyTypes = ['apartment', 'house', 'studio', 'bedsitter', 'mansion', 'townhouse', 'villa', 'penthouse', 'condo'];
 
   const typePages = propertyTypes.map(type => ({
-    url: `${baseUrl}/search?property_type=${encodeURIComponent(type)}&amp;type=rent`,
+    url: `${baseUrl}/search?property_type=${encodeURIComponent(type)}&type=rent`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: 0.8,
