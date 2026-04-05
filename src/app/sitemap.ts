@@ -46,6 +46,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/properties`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
@@ -124,29 +130,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error generating sitemap:', error);
   }
 
-  const locations = [
-    'lagos', 'abuja', 'london', 'manchester', 'dubai', 'abu dhabi', 'new york',
-    'toronto', 'vancouver', 'singapore', 'sydney', 'melbourne', 'johannesburg',
-    'cape town', 'paris', 'berlin', 'madrid', 'rome', 'tokyo', 'bangkok',
-    'mumbai', 'delhi', 'istanbul', 'doha', 'riyadh', 'nairobi', 'accra', 'bali'
-  ];
-
-  const locationPages = locations.map(location => ({
-    url: `${baseUrl}/search?q=${encodeURIComponent(location)}`,
-    lastModified: new Date(),
-    changeFrequency: 'daily' as const,
-    priority: 0.8,
-  }));
-
-  const propertyTypes = ['apartment', 'house', 'studio', 'bedsitter', 'mansion', 'townhouse', 'villa', 'penthouse', 'condo'];
-
-  const typePages = propertyTypes.map(type => ({
-    url: `${baseUrl}/search?property_type=${encodeURIComponent(type)}&amp;type=rent`,
-    lastModified: new Date(),
-    changeFrequency: 'daily' as const,
-    priority: 0.8,
-  }));
-
   const countryPages = COUNTRIES.map((country) => ({
     url: `${baseUrl}/countries/${slugifyCountry(country)}`,
     lastModified: new Date(),
@@ -154,5 +137,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...seoPages, ...countryPages, ...propertyPages, ...locationPages, ...typePages];
+  return [...staticPages, ...seoPages, ...countryPages, ...propertyPages];
 }

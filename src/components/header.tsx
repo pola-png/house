@@ -25,6 +25,7 @@ import { useAuth } from '@/hooks/use-auth-supabase';
 import { BrandMark } from './brand-mark';
 
 const navLinks = [
+  { href: '/properties', label: 'All Properties' },
   { href: '/rentals-worldwide', label: 'To Rent' },
   { href: '/real-estate-for-sale', label: 'For Sale' },
   { href: '/developments', label: 'Developments' },
@@ -35,6 +36,7 @@ const navLinks = [
 ];
 
 const seoPages = [
+  { href: '/properties', label: 'All Properties' },
   { href: '/rentals-worldwide', label: 'Rentals Worldwide' },
   { href: '/family-homes-for-rent', label: 'Family Homes for Rent' },
   { href: '/city-properties', label: 'City Properties' },

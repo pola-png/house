@@ -1,7 +1,7 @@
 import { Property } from '@/lib/types';
 import { BRAND } from '@/lib/brand';
 import { toWasabiProxyAbsolute } from '@/lib/wasabi';
-import { createPropertyUrl } from '@/lib/utils-seo';
+import { createAbsolutePropertyUrl } from '@/lib/utils-seo';
 
 interface PropertySchemaProps {
   property: Property;
@@ -13,7 +13,7 @@ export function PropertySchema({ property }: PropertySchemaProps) {
     "@type": "RealEstateListing",
     "name": property.title,
     "description": property.description,
-    "url": createPropertyUrl(property.id, property.title),
+    "url": createAbsolutePropertyUrl(property.id, property.title),
     "image": property.images?.[0]
       ? toWasabiProxyAbsolute(property.images[0])
       : `${BRAND.siteUrl}/default-property.jpg`,

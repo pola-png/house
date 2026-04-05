@@ -42,6 +42,7 @@ import type { Property } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
+import { createPropertyUrl } from "@/lib/utils-seo";
 
 interface PropertiesClientProps {
   data: Property[];
@@ -226,7 +227,7 @@ export function PropertiesClient({ data: initialData }: PropertiesClientProps) {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem asChild>
-              <Link href={`/property/${property.id}`}>
+              <Link href={createPropertyUrl(property.id, property.title)}>
                 <Eye className="mr-2 h-4 w-4" />
                 View Property
               </Link>
@@ -385,7 +386,7 @@ export function PropertiesClient({ data: initialData }: PropertiesClientProps) {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
-                          <Link href={`/property/${property.id}`}>
+                          <Link href={createPropertyUrl(property.id, property.title)}>
                             <Eye className="mr-2 h-4 w-4" />
                             View
                           </Link>

@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { createPropertyUrl } from "@/lib/utils-seo";
 
 interface PaymentRequest {
   id: string;
@@ -332,7 +333,7 @@ export default function PaymentApprovalsPage() {
                           asChild
                           className="sm:w-auto"
                         >
-                          <a href={`/property/${request.propertyId}`} target="_blank">
+                          <a href={createPropertyUrl(request.propertyId, request.propertyTitle)} target="_blank">
                             <ExternalLink className="h-4 w-4" />
                           </a>
                         </Button>

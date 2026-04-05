@@ -4,7 +4,8 @@ import PropertyDetailClient from './property-detail-client';
 import { PropertySchema } from '@/components/property-schema';
 import { toWasabiProxyAbsolute } from '@/lib/wasabi';
 import { BRAND } from '@/lib/brand';
-import { createPropertyUrl } from '@/lib/utils-seo';
+import { createAbsolutePropertyUrl, createPropertyUrl } from '@/lib/utils-seo';
+import { notFound, redirect } from 'next/navigation';
 
 export const revalidate = 3600; // Revalidate every hour for fresh content
 
@@ -12,24 +13,35 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
-  
-  // Extract actual ID from slug-id format
-  let actualId = id;
-  if (id.includes('-')) {
-    const parts = id.split('-');
-    if (parts.length >= 5) {
-      actualId = parts.slice(-5).join('-');
-    }
+function resolvePropertyId(id: string) {
+  if (!id.includes('-')) {
+    return id;
   }
 
+  const parts = id.split('-');
+  if (parts.length >= 5) {
+    return parts.slice(-5).join('-');
+  }
+
+  return id;
+}
+
+async function getPropertyByParam(idParam: string) {
+  const actualId = resolvePropertyId(idParam);
+  const { data: property } = await supabase
+    .from('properties')
+    .select('*')
+    .eq('id', actualId)
+    .single();
+
+  return property;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+
   try {
-    const { data: property } = await supabase
-      .from('properties')
-      .select('*')
-      .eq('id', actualId)
-      .single();
+    const property = await getPropertyByParam(id);
 
     if (!property) {
       return {
@@ -62,7 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const ogImages = (primaryImage ? [primaryImage] : images).length
       ? (primaryImage ? [primaryImage] : images)
       : [`${BRAND.siteUrl}/default-property.jpg`];
-    const canonicalUrl = createPropertyUrl(property.id, property.title);
+    const canonicalUrl = createAbsolutePropertyUrl(property.id, property.title);
 
     // Comprehensive keywords for better SEO
     const keywords = [
@@ -154,29 +166,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PropertyPage({ params }: Props) {
   const { id } = await params;
-  
-  // Extract actual ID from slug-id format
-  let actualId = id;
-  if (id.includes('-')) {
-    const parts = id.split('-');
-    if (parts.length >= 5) {
-      actualId = parts.slice(-5).join('-');
-    }
+  const actualId = resolvePropertyId(id);
+
+  const property = await getPropertyByParam(id);
+  if (!property) {
+    notFound();
   }
 
-  // Fetch property for schema
-  let property = null;
+  const canonicalPath = createPropertyUrl(property.id, property.title);
+  if (id !== canonicalPath.replace('/property/', '')) {
+    redirect(canonicalPath);
+  }
+
   let agent = null;
   try {
-    const { data } = await supabase
-      .from('properties')
-      .select('*')
-      .eq('id', actualId)
-      .single();
-    property = data;
-    
-    // Fetch agent data for enhanced schema
-    if (property?.landlordId) {
+    if (property.landlordId) {
       const { data: agentData } = await supabase
         .from('profiles')
         .select('*')
@@ -185,11 +189,11 @@ export default async function PropertyPage({ params }: Props) {
       agent = agentData;
     }
   } catch (error) {
-    console.error('Error fetching property for schema:', error);
+    console.error('Error fetching property agent for schema:', error);
   }
 
   const propertyWithAgent = property ? { ...property, agent: agent || property.agent } : null;
-  const canonicalUrl = property ? createPropertyUrl(property.id, property.title) : `${BRAND.siteUrl}/property/${actualId}`;
+  const canonicalUrl = createAbsolutePropertyUrl(property.id, property.title);
   
   return (
     <>
@@ -295,7 +299,7 @@ export default async function PropertyPage({ params }: Props) {
                 "@type": "ListItem",
                 "position": 3,
                 "name": property?.location || "Property",
-                "item": `${BRAND.siteUrl}/search?q=${property?.location || ''}`
+                "item": `${BRAND.siteUrl}/search?q=${encodeURIComponent(property?.location || '')}`
               },
               {
                 "@type": "ListItem",

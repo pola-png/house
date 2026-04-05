@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth-supabase";
 import { supabase } from "@/lib/supabase";
 import { normalizeWasabiImageArray } from "@/lib/wasabi";
+import { createPropertyUrl } from "@/lib/utils-seo";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -358,7 +359,7 @@ export default function Dashboard() {
                     const images = Array.isArray(property.images) ? property.images : [];
                     const imageUrl = images.length > 0 ? images[0] : null;
                     return (
-                      <Link key={property.id} href={`/property/${property.id}`} className="group block">
+                      <Link key={property.id} href={createPropertyUrl(property.id, property.title)} className="group block">
                         <div className="rounded-lg border overflow-hidden bg-card hover:shadow-sm transition">
                           <div className="relative w-full aspect-[4/3]">
                             {imageUrl ? (

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { BRAND } from '@/lib/brand';
-import { createPropertyUrl } from '@/lib/utils-seo';
+import { createAbsolutePropertyUrl } from '@/lib/utils-seo';
 
 interface SEOSchemaProps {
   type: 'property' | 'search' | 'homepage' | 'organization';
@@ -48,7 +48,7 @@ export function SEOSchema({ type, data }: SEOSchemaProps) {
             "@type": "Accommodation",
             "name": data.title,
             "description": data.description,
-            "url": `${BRAND.siteUrl}${createPropertyUrl(data.id, data.title)}`,
+            "url": createAbsolutePropertyUrl(data.id, data.title),
             "image": data.images?.[0] || `${BRAND.siteUrl}/default-property.jpg`,
             "address": {
               "@type": "PostalAddress",
@@ -99,7 +99,7 @@ export function SEOSchema({ type, data }: SEOSchemaProps) {
                 "item": {
                   "@type": "Accommodation",
                   "name": property.title,
-                  "url": createPropertyUrl(property.id, property.title)
+                  "url": createAbsolutePropertyUrl(property.id, property.title)
                 }
               })) || []
             }

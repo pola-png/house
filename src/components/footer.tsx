@@ -10,6 +10,7 @@ const footerLinks = {
     { label: 'About Us', href: '/about' },
     { label: 'Contact Us', href: '/contact' },
     { label: 'Blog', href: '/blog' },
+    { label: 'All Properties', href: '/properties' },
   ],
   explore: SEO_FOOTER_LINKS,
   support: [
