@@ -9,12 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           '/admin/',
           '/api/',
-          '/_next/',
           '/private/',
-          '/search?*page=*',
-          '/search?*sort=*',
-          '/search?*view=*',
-          '/search?*limit=*',
         ],
       },
       {
@@ -23,10 +18,8 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           '/admin/',
           '/api/',
-          '/_next/',
           '/private/',
         ],
-        crawlDelay: 1,
       },
       {
         userAgent: 'Bingbot',
@@ -34,10 +27,8 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           '/admin/',
           '/api/',
-          '/_next/',
           '/private/',
         ],
-        crawlDelay: 2,
       },
     ],
     sitemap: 'https://gotperfects.online/sitemap.xml',
