@@ -141,7 +141,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const propertyTypes = ['apartment', 'house', 'studio', 'bedsitter', 'mansion', 'townhouse', 'villa', 'penthouse', 'condo'];
 
   const typePages = propertyTypes.map(type => ({
-    url: `${baseUrl}/search?property_type=${encodeURIComponent(type)}&type=rent`,
+    url: `${baseUrl}/search?property_type=${encodeURIComponent(type)}&amp;type=rent`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: 0.8,
