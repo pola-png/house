@@ -13,7 +13,20 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
   const type = params.type as string;
   const propertyType = params.property_type as string;
   const beds = params.beds as string;
-  const hasFilters = Boolean(q || type || propertyType || beds);
+  const minPrice = params.min_price as string;
+  const maxPrice = params.max_price as string;
+  const baths = params.baths as string;
+  const amenities = params.amenities;
+  const amenityCount = Array.isArray(amenities) ? amenities.length : amenities ? 1 : 0;
+  const indexableTypeOnly = (type === 'rent' || type === 'buy' || type === 'sale') &&
+    !q &&
+    !propertyType &&
+    !beds &&
+    !baths &&
+    !minPrice &&
+    !maxPrice &&
+    amenityCount === 0;
+  const hasFilters = Boolean(q || type || propertyType || beds || baths || minPrice || maxPrice || amenityCount > 0);
   
   let title = `Property Search Results | ${BRAND.name}`;
   let description = `Find your perfect property anywhere with ${BRAND.name}`;
@@ -36,9 +49,11 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
     title,
     description,
     alternates: {
-      canonical: `${BRAND.siteUrl}/search`,
+      canonical: indexableTypeOnly
+        ? `${BRAND.siteUrl}/search?type=${type === 'sale' ? 'buy' : type}`
+        : `${BRAND.siteUrl}/search`,
     },
-    robots: hasFilters
+    robots: hasFilters && !indexableTypeOnly
       ? {
           index: false,
           follow: true,
