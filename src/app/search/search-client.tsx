@@ -14,16 +14,20 @@ import type { Property } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
-import { supabase } from "@/lib/supabase";
-import { normalizeWasabiImageArray } from "@/lib/wasabi";
+import { fetchSearchProperties, type SearchPropertyResult } from "@/lib/search-properties";
 
-function SearchContent() {
+interface SearchPageClientProps {
+  initialResults: SearchPropertyResult;
+  initialParamsKey: string;
+}
+
+function SearchContent({ initialResults, initialParamsKey }: SearchPageClientProps) {
   const searchParams = useSearchParams();
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [promotedProperties, setPromotedProperties] = useState<Property[]>([]);
-  const [regularProperties, setRegularProperties] = useState<Property[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [pageTitle, setPageTitle] = useState("Properties");
+  const [properties, setProperties] = useState<Property[]>(initialResults.properties as Property[]);
+  const [promotedProperties, setPromotedProperties] = useState<Property[]>(initialResults.promotedProperties as Property[]);
+  const [regularProperties, setRegularProperties] = useState<Property[]>(initialResults.regularProperties as Property[]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [pageTitle, setPageTitle] = useState(initialResults.pageTitle);
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchController, setFetchController] = useState<AbortController | null>(null);
   const itemsPerPage = 12;
@@ -89,12 +93,24 @@ function SearchContent() {
       fetchController.abort();
     }
     
+    setCurrentPage(1);
+
+    const paramsKey = searchParams?.toString() ?? '';
+    if (paramsKey === initialParamsKey) {
+      setProperties(initialResults.properties as Property[]);
+      setPromotedProperties(initialResults.promotedProperties as Property[]);
+      setRegularProperties(initialResults.regularProperties as Property[]);
+      setPageTitle(initialResults.pageTitle);
+      setIsLoading(false);
+      setFetchController(null);
+      return;
+    }
+
     // Clear previous results and show loading immediately
     setProperties([]);
     setPromotedProperties([]);
     setRegularProperties([]);
     setIsLoading(true);
-    setCurrentPage(1);
     
     // Create new controller for this request
     const controller = new AbortController();
@@ -107,35 +123,6 @@ function SearchContent() {
       controller.abort();
     };
   }, [searchParams?.toString()]);
-
-  const fetchAllProperties = async (query: any) => {
-    const batchSize = 1000;
-    const allRows: any[] = [];
-    let from = 0;
-
-    while (true) {
-      const to = from + batchSize - 1;
-      const { data, error } = await query.range(from, to);
-
-      if (error) {
-        throw error;
-      }
-
-      if (!data || data.length === 0) {
-        break;
-      }
-
-      allRows.push(...data);
-
-      if (data.length < batchSize) {
-        break;
-      }
-
-      from += batchSize;
-    }
-
-    return allRows;
-  };
 
   const fetchProperties = async (controller?: AbortController) => {
     console.log('Starting fetchProperties...');
@@ -161,201 +148,18 @@ function SearchContent() {
       const baths = searchParams?.get('baths');
       const amenities = searchParams?.getAll('amenities') ?? [];
 
-      // Enhanced filtering with relevance scoring
-      let query = supabase.from('properties').select('*');
-      let relevanceFilters = [];
-
-      if (listingType === 'rent') {
-        query = query.in('status', ['Available', 'For Rent']);
-        setPageTitle("Properties for Rent");
-      } else if (listingType === 'buy' || listingType === 'sale') {
-        query = query.eq('status', 'For Sale');
-        setPageTitle("Properties for Sale");
-      } else if (listingType === 'short-let') {
-        query = query.eq('status', 'Short Let');
-        setPageTitle("Short Let Properties");
-      } else if (listingType === 'land') {
-        query = query.eq('propertyType', 'Land');
-        setPageTitle("Land for Sale");
-      }
-
-      if (q) {
-        // Enhanced search with title priority
-        query = query.or(`title.ilike.%${q}%,location.ilike.%${q}%,city.ilike.%${q}%,propertyType.ilike.%${q}%,description.ilike.%${q}%`);
-        relevanceFilters.push(q);
-      }
-
-      const uniquePropertyTypes = [...new Set(allPropertyTypes)].filter(Boolean);
-      if (uniquePropertyTypes.length > 0) {
-        const typeConditions = uniquePropertyTypes.map(type => `propertyType.ilike.%${type}%,title.ilike.%${type}%`);
-        if (typeConditions.length === 1) {
-          query = query.or(`propertyType.ilike.%${uniquePropertyTypes[0]}%,title.ilike.%${uniquePropertyTypes[0]}%`);
-        } else {
-          query = query.or(typeConditions.join(','));
-        }
-        relevanceFilters.push(...uniquePropertyTypes);
-      }
-
-      if (baths) {
-        query = query.gte('bathrooms', parseInt(baths, 10));
-      }
-
-      if (amenities.length > 0) {
-        amenities.forEach(amenity => {
-          query = query.contains('amenities', [amenity]);
-        });
-      }
-
-      if (minPrice) {
-        query = query.gte('price', parseInt(minPrice, 10));
-      }
-      if (maxPrice) {
-        query = query.lte('price', parseInt(maxPrice, 10));
-      }
-
-      if (beds) {
-        const bedroomCount = beds === '4+' ? 4 : parseInt(beds, 10);
-        query = query.gte('bedrooms', bedroomCount);
-      }
-
       console.log('Executing query...');
-      const data = await fetchAllProperties(query.order('createdAt', { ascending: false }));
-
-      console.log('Query results:', data?.length || 0, 'properties');
-
-      // Get promoted properties with same filters as regular properties
-      let promotedQuery = supabase
-        .from('properties')
-        .select('*')
-        .or('isPremium.eq.true,featuredExpiresAt.gt.' + new Date().toISOString());
-
-      // Apply same listing type filter to promoted properties
-      if (listingType === 'rent') {
-        promotedQuery = promotedQuery.in('status', ['Available', 'For Rent']);
-      } else if (listingType === 'buy' || listingType === 'sale') {
-        promotedQuery = promotedQuery.eq('status', 'For Sale');
-      } else if (listingType === 'short-let') {
-        promotedQuery = promotedQuery.eq('status', 'Short Let');
-      } else if (listingType === 'land') {
-        promotedQuery = promotedQuery.eq('propertyType', 'Land');
-      }
-
-      // Apply location filter to promoted properties if user searched for location
-      if (q) {
-        promotedQuery = promotedQuery.or(`title.ilike.%${q}%,location.ilike.%${q}%,city.ilike.%${q}%,propertyType.ilike.%${q}%,description.ilike.%${q}%`);
-      }
-
-      const { data: allPromotedData, error: promotedError } = await promotedQuery
-        .order('createdAt', { ascending: false });
-
-      if (promotedError) {
-        console.error('Promoted properties error:', promotedError);
-      }
-
-      // Combine and score properties for relevance
-      const allProperties = [...(data || [])];
-      const promotedProperties = allPromotedData || [];
-      
-      // Remove duplicates and merge - promoted properties always included
-      const propertyMap = new Map();
-      
-      // Add ALL promoted properties first (they always show)
-      promotedProperties.forEach(p => {
-        propertyMap.set(p.id, { ...p, isPromoted: true });
+      const results = await fetchSearchProperties({
+        q,
+        type: listingType || undefined,
+        propertyTypes: allPropertyTypes,
+        minPrice: minPrice || undefined,
+        maxPrice: maxPrice || undefined,
+        beds: beds || undefined,
+        baths: baths || undefined,
+        amenities,
       });
-      
-      // Add regular properties that match search criteria
-      allProperties.forEach(p => {
-        if (!propertyMap.has(p.id)) {
-          propertyMap.set(p.id, { ...p, isPromoted: false });
-        }
-      });
-      
-      const combinedData = Array.from(propertyMap.values());
-      
-      // Score properties for relevance
-      const scoredProperties = combinedData.map(p => {
-        let score = 0;
-        const title = p.title?.toLowerCase() || '';
-        const location = p.location?.toLowerCase() || '';
-        const city = p.city?.toLowerCase() || '';
-        const description = p.description?.toLowerCase() || '';
-        
-        relevanceFilters.forEach(filter => {
-          const searchTerm = filter.toLowerCase();
-          if (title.includes(searchTerm)) score += 15; // Title matches get highest priority
-          if (location.includes(searchTerm)) score += 10;
-          if (city.includes(searchTerm)) score += 8;
-          if (p.propertyType?.toLowerCase().includes(searchTerm)) score += 10;
-          if (description.includes(searchTerm)) score += 2;
-        });
-        
-        return { ...p, relevanceScore: score };
-      });
-      
-      // Sort by promotion status first, then relevance, then date
-      scoredProperties.sort((a, b) => {
-        if (a.isPromoted !== b.isPromoted) return b.isPromoted ? 1 : -1;
-        if (a.relevanceScore !== b.relevanceScore) return b.relevanceScore - a.relevanceScore;
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      });
-
-      const landlordIds = [...new Set(scoredProperties.map(p => p.landlordId))];
-      const { data: profiles, error: profilesError } = await supabase
-        .from('profiles')
-        .select('*')
-        .in('id', landlordIds);
-      
-      if (profilesError) {
-        console.error('Profiles error:', profilesError);
-      }
-      
-      const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
-      
-      const propertiesWithAgents = scoredProperties.map(p => {
-        const profileData = profileMap.get(p.landlordId);
-        return {
-          ...p,
-          images: normalizeWasabiImageArray(p.images),
-          createdAt: new Date(p.createdAt),
-          updatedAt: new Date(p.updatedAt),
-          agent: profileData ? {
-            uid: profileData.id,
-            firstName: profileData.firstName || '',
-            lastName: profileData.lastName || '',
-            displayName: profileData.displayName || profileData.email?.split('@')[0] || '',
-            email: profileData.email || '',
-            role: profileData.role || 'agent',
-            agencyName: profileData.agencyName,
-            phoneNumber: profileData.phoneNumber,
-            photoURL: profileData.photoURL,
-            createdAt: new Date(profileData.createdAt)
-          } : {
-            uid: 'default-agent',
-            firstName: 'Default',
-            lastName: 'Agent',
-            displayName: 'Default Agent',
-            email: 'agent@default.com',
-            role: 'agent',
-            agencyName: 'Default Agency',
-            createdAt: new Date()
-          }
-        };
-      });
-
-      // Separate promoted and regular properties based on current promotion status
-      const currentDate = new Date();
-      const promoted = propertiesWithAgents.filter(p => 
-        p.isPremium || 
-        (p.featuredExpiresAt && new Date(p.featuredExpiresAt) > currentDate)
-      );
-      const regular = propertiesWithAgents.filter(p => 
-        !p.isPremium && 
-        (!p.featuredExpiresAt || new Date(p.featuredExpiresAt) <= currentDate)
-      );
-
-      // Properties are already sorted by relevance and promotion status
-      console.log('Setting properties:', promoted.length + regular.length, 'total');
+      console.log('Query results:', results.properties.length, 'properties');
       
       // Check if request was cancelled
       if (controller?.signal.aborted) {
@@ -363,9 +167,10 @@ function SearchContent() {
         return;
       }
       
-      setPromotedProperties(promoted);
-      setRegularProperties(regular);
-      setProperties(propertiesWithAgents); // Use all properties in sorted order
+      setPageTitle(results.pageTitle);
+      setPromotedProperties(results.promotedProperties as Property[]);
+      setRegularProperties(results.regularProperties as Property[]);
+      setProperties(results.properties as Property[]);
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
         console.log('Request was cancelled');
@@ -538,14 +343,14 @@ function SearchContent() {
   );
 }
 
-export default function SearchPageClient() {
+export default function SearchPageClient(props: SearchPageClientProps) {
   return (
     <Suspense fallback={
       <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-[50vh]">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     }>
-      <SearchContent />
+      <SearchContent {...props} />
     </Suspense>
   );
 }
